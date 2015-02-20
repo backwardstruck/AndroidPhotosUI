@@ -12,7 +12,9 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.rooney.poc.photos.R;
+import com.rooney.poc.photos.fragments.ItemListFragment;
 import com.rooney.poc.photos.models.ActivityModel;
+import com.rooney.poc.photos.models.ItemContent;
 
 import java.util.List;
 
@@ -20,19 +22,21 @@ public class ListItemAdapter extends BaseAdapter {
     private LayoutInflater inflater;
     private List<ActivityModel> activityModels;
     private Context context;
+    private ItemListFragment fragment;
 
 
-    public static ListItemAdapter newInstance(Context context, List<ActivityModel> items) {
-        return new ListItemAdapter(context, items);
+    public static ListItemAdapter newInstance(Context context, List<ActivityModel> items, ItemListFragment fragment) {
+        return new ListItemAdapter(context, items, fragment);
     }
 
-    public ListItemAdapter(Context ctx, List<ActivityModel> items) {
+    public ListItemAdapter(Context ctx, List<ActivityModel> items, ItemListFragment fragment) {
         super();
         context = ctx;
         if(context != null){
             inflater = LayoutInflater.from(context);
         }
         activityModels = items;
+        this.fragment = fragment;
     }
 
     @Override
@@ -88,8 +92,16 @@ public class ListItemAdapter extends BaseAdapter {
 
 
         } else {
+            holder.userImage.setTag(null);
             holder.userImage.setVisibility(View.GONE);
             holder.progressBar1.setVisibility(View.VISIBLE);
+            if(ItemContent.ITEMS.get(position) != null) {
+                if (ItemContent.ITEMS.get(position).image_url[0] != null) {
+                    String imageURL = null;
+                    imageURL = ItemContent.ITEMS.get(position).image_url[0];
+                    fragment.getItemImage(position, imageURL);
+                }
+            }
         }
 
         if(activityModel.direct_object.name != null){

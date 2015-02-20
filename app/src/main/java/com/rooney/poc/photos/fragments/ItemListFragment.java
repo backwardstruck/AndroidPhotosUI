@@ -98,15 +98,14 @@ public class ItemListFragment extends ListFragment implements AbsListView.OnScro
         }
 
         if(getListAdapter() == null){
-            setListAdapter(new ListItemAdapter(getActivity(), ItemContent.ITEMS));
+            setListAdapter(new ListItemAdapter(getActivity(), ItemContent.ITEMS,this));
         } else {
             ((ListItemAdapter)getListAdapter()).notifyDataSetChanged();
         }
 
-        //get the images
-        getItemImages();
-
         mNotLoading = true;
+
+        clearHiddenBitmaps();
     }
 
     private void callToast(String message){
@@ -114,51 +113,39 @@ public class ItemListFragment extends ListFragment implements AbsListView.OnScro
     }
 
     /**
-     * Retrieve the thumbnails
+     * Retrieve the image
      */
-    private void getItemImages(){
-        String imageURL = null;
-        if(ItemContent.ITEMS != null){
-            for(int i = 0; i < ItemContent.ITEMS.size(); i++){
-                if(ItemContent.ITEMS.get(i) != null){
-                    if(ItemContent.ITEMS.get(i).image_url[0] != null){
-                        imageURL = ItemContent.ITEMS.get(i).image_url[0];
+    public void getItemImage(final int index, String imageURL) {
 
-                        //proceed with the network request
-                        final int index = i;
-                        ImageLoader.ImageListener listener = new ImageLoader.ImageListener() {
-                            @Override
-                            public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
-                                //check the image
-                                Bitmap image = null;
-                                image = response.getBitmap();
-                                if(image != null){
-                                    ItemContent.ITEMS.get(index).imageBitmap = image;
-                                    //Successfully loaded image
-                                    ((ListItemAdapter)getListAdapter()).notifyDataSetChanged();
+        //proceed with the network request
+        ImageLoader.ImageListener listener = new ImageLoader.ImageListener() {
+            @Override
+            public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
+                //check the image
+                Bitmap image = null;
+                image = response.getBitmap();
+                if (image != null) {
+                    ItemContent.ITEMS.get(index).imageBitmap = image;
+                    //Successfully loaded image
+                    ((ListItemAdapter) getListAdapter()).notifyDataSetChanged();
 
-                                }
-
-                            }
-
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-                                //something went wrong
-                                callToast(error.getMessage());
-                            }
-                        };
-
-                        try {
-                            ((MainActivity)getActivity()).getImage(imageURL, listener);
-                        } catch (NullPointerException e) {
-                            return;
-                        }
-
-                    }
                 }
+
             }
 
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //something went wrong
+                callToast(error.getMessage());
+            }
+        };
+
+        try {
+            ((MainActivity) getActivity()).getImage(imageURL, listener);
+        } catch (NullPointerException e) {
+            return;
         }
+
 
     }
 
@@ -204,5 +191,14 @@ public class ItemListFragment extends ListFragment implements AbsListView.OnScro
 
 
         ((MainActivity)getActivity()).getDealItems(gsonRequest);
+    }
+
+    private void clearHiddenBitmaps(){
+        if(mOffset >= 40){
+            for(int i = mOffset - 40; i < mOffset - 20; i++){
+                ItemContent.ITEMS.get(i).imageBitmap = null;
+            }
+            ((ListItemAdapter) getListAdapter()).notifyDataSetChanged();
+        }
     }
 }
