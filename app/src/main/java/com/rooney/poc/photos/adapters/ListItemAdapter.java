@@ -93,7 +93,7 @@ public class ListItemAdapter extends BaseAdapter {
             holder.progressBar1.setVisibility(View.VISIBLE);
         }
 
-        holder.title.setText(activityModel.created_at);
+        holder.title.setText(activityModel.user.username);
 
         return view;
     }

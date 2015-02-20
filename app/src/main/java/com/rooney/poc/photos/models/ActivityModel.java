@@ -8,12 +8,7 @@ public class ActivityModel {
     public String created_at;
     public String updated_at;
     public boolean is_active;
-    /*        "user": {
-        "user_id": "8ea239c4-c648-4009-a252-a220e018dc4b",
-                "avatar_url": "http://graph.facebook.com/4735/picture?width=100&height=100",
-                "username": "aaron",
-                "name": "Aaron Rudenstine"
-    },*/
+    public User user;
     public int image_count;
     public int likes_count;
     public int comments_count;
