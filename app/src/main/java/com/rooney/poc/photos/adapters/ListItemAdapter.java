@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.rooney.poc.photos.R;
@@ -60,6 +61,7 @@ public class ListItemAdapter extends BaseAdapter {
             holder = new ViewHolder();
             holder.userImage = (ImageView)view.findViewById(R.id.list_item_image_view);
             holder.title = (TextView)view.findViewById(R.id.list_item_title);
+            holder.progressBar1 = (ProgressBar)view.findViewById(R.id.progressBar1);
             view.setTag(holder);
         } else {
             view = convertView;
@@ -68,7 +70,15 @@ public class ListItemAdapter extends BaseAdapter {
 
         //set values from data
         ActivityModel activityModel = activityModels.get(position);
-        holder.userImage.setImageBitmap(activityModel.imageBitmap);
+        if(activityModel.imageBitmap != null){
+            holder.userImage.setImageBitmap(activityModel.imageBitmap);
+            holder.progressBar1.setVisibility(View.GONE);
+            holder.userImage.setVisibility(View.VISIBLE);
+        } else {
+            holder.userImage.setVisibility(View.GONE);
+            holder.progressBar1.setVisibility(View.VISIBLE);
+        }
+
         holder.title.setText(activityModel.created_at);
 
         return view;
@@ -77,5 +87,6 @@ public class ListItemAdapter extends BaseAdapter {
     private class ViewHolder {
         public ImageView userImage;
         public TextView title, price;
+        public ProgressBar progressBar1;
     }
 }

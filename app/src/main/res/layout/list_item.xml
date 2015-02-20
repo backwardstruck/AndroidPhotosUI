@@ -18,7 +18,15 @@
             android:id="@+id/list_item_image_view"
             android:layout_width="@dimen/deal_list_item_image_size"
             android:layout_height="@dimen/deal_list_item_image_size"
-            android:contentDescription="@string/image_content_description"/>
+            android:contentDescription="@string/image_content_description"
+            android:visibility="gone"/>
+
+        <ProgressBar
+            android:id="@+id/progressBar1"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true" />
 
     </LinearLayout>
 
