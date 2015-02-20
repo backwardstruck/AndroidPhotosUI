@@ -79,6 +79,9 @@ public class ListItemAdapter extends BaseAdapter {
 
         //set values from data
         ActivityModel activityModel = activityModels.get(position);
+        if(activityModel == null){
+            return view;
+        }
         if(activityModel.imageBitmap != null){
             holder.userImage.setImageBitmap(activityModel.imageBitmap);
             holder.progressBar1.setVisibility(View.GONE);

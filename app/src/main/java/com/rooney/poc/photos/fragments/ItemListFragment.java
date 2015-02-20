@@ -106,6 +106,7 @@ public class ItemListFragment extends ListFragment implements AbsListView.OnScro
         mNotLoading = true;
 
         clearHiddenBitmaps();
+        clearHiddenItems();
     }
 
     private void callToast(String message){
@@ -194,11 +195,21 @@ public class ItemListFragment extends ListFragment implements AbsListView.OnScro
     }
 
     private void clearHiddenBitmaps(){
-        if(mOffset >= 40){
-            for(int i = mOffset - 40; i < mOffset - 20; i++){
+        if(ItemContent.ITEMS.size() >= 40){
+            for(int i = ItemContent.ITEMS.size() - 40; i < ItemContent.ITEMS.size() - 20; i++){
                 ItemContent.ITEMS.get(i).imageBitmap = null;
             }
             ((ListItemAdapter) getListAdapter()).notifyDataSetChanged();
+        }
+    }
+
+    private void clearHiddenItems() {
+        if (ItemContent.ITEMS.size() > 80) {
+            for(int i = ItemContent.ITEMS.size() - 80; i < ItemContent.ITEMS.size() - 40; i++){
+                ItemContent.ITEMS.remove(i);
+                ItemContent.ITEMS.add(i, null);
+                ((ListItemAdapter) getListAdapter()).notifyDataSetChanged();
+            }
         }
     }
 }
