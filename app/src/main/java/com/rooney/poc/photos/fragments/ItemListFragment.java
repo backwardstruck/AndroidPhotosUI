@@ -126,10 +126,11 @@ public class ItemListFragment extends ListFragment implements AbsListView.OnScro
                 Bitmap image = null;
                 image = response.getBitmap();
                 if (image != null) {
-                    ItemContent.ITEMS.get(index).imageBitmap = image;
-                    //Successfully loaded image
-                    ((ListItemAdapter) getListAdapter()).notifyDataSetChanged();
-
+                    if(ItemContent.ITEMS.get(index) != null){
+                        ItemContent.ITEMS.get(index).imageBitmap = image;
+                        //Successfully loaded image
+                        ((ListItemAdapter) getListAdapter()).notifyDataSetChanged();
+                    }
                 }
 
             }
@@ -165,6 +166,12 @@ public class ItemListFragment extends ListFragment implements AbsListView.OnScro
             }
 
         }
+        if(ItemContent.ITEMS.size() - firstVisibleItem == 80){
+            for(int i = 0; i < 40; i ++){
+                ItemContent.ITEMS.remove(ItemContent.ITEMS.size()-1);
+                ((ListItemAdapter) getListAdapter()).notifyDataSetChanged();
+            }
+        }
     }
 
     private void loadMoreData(){
@@ -195,11 +202,15 @@ public class ItemListFragment extends ListFragment implements AbsListView.OnScro
     }
 
     private void clearHiddenBitmaps(){
-        if(ItemContent.ITEMS.size() >= 40){
-            for(int i = ItemContent.ITEMS.size() - 40; i < ItemContent.ITEMS.size() - 20; i++){
-                ItemContent.ITEMS.get(i).imageBitmap = null;
+        try {
+            if(ItemContent.ITEMS.size() >= 40){
+                for(int i = ItemContent.ITEMS.size() - 40; i < ItemContent.ITEMS.size() - 20; i++){
+                    ItemContent.ITEMS.get(i).imageBitmap = null;
+                }
+                ((ListItemAdapter) getListAdapter()).notifyDataSetChanged();
             }
-            ((ListItemAdapter) getListAdapter()).notifyDataSetChanged();
+        } catch (Exception e) {
+            return;
         }
     }
 
