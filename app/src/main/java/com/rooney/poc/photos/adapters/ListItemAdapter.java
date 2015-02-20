@@ -4,6 +4,8 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -47,6 +49,8 @@ public class ListItemAdapter extends BaseAdapter {
         }
     }
 
+
+
     @Override
     public long getItemId(int position) {
         return position;
@@ -74,6 +78,16 @@ public class ListItemAdapter extends BaseAdapter {
             holder.userImage.setImageBitmap(activityModel.imageBitmap);
             holder.progressBar1.setVisibility(View.GONE);
             holder.userImage.setVisibility(View.VISIBLE);
+
+            if(holder.userImage.getTag() == null){
+                Animation animationFadeIn = AnimationUtils.loadAnimation(context, R.anim.fade_in);
+                holder.userImage.startAnimation(animationFadeIn);
+                holder.userImage.setTag(new Object());
+            }
+
+
+
+
         } else {
             holder.userImage.setVisibility(View.GONE);
             holder.progressBar1.setVisibility(View.VISIBLE);

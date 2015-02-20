@@ -152,6 +152,7 @@ public class ItemListFragment extends ListFragment {
                                     ItemContent.ITEMS.get(index).imageBitmap = image;
                                     //Successfully loaded image
                                     ((ListItemAdapter)getListAdapter()).notifyDataSetChanged();
+
                                 }
 
                             }
