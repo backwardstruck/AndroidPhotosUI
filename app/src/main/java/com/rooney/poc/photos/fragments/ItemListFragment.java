@@ -5,6 +5,7 @@ import android.app.ListFragment;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -20,9 +21,11 @@ import com.rooney.poc.photos.network.GsonRequest;
 
 import java.util.ArrayList;
 
-public class ItemListFragment extends ListFragment {
+public class ItemListFragment extends ListFragment implements AbsListView.OnScrollListener{
 
     private OnFragmentInteractionListener mListener;
+    private int mOffset = 0;
+    private boolean mNotLoading = false;
 
     public static ItemListFragment newInstance() {
         ItemListFragment fragment = new ItemListFragment();
@@ -74,33 +77,11 @@ public class ItemListFragment extends ListFragment {
     public void onResume(){
         super.onResume();
 
-        int offset = 0;
-        String url ="http://ndev-coreapi.citymaps.com/v2/activity/user/8ea239c4-c648-4009-a252-a220e018dc4b/images?offset=" + offset + "&limit=20";
-
-
-
-
-        // Request a string response from the provided URL.
-        GsonRequest gsonRequest = new GsonRequest(url, ResponseObject.class, null,
-                new Response.Listener<ResponseObject>() {
-
-                    @Override
-                    public void onResponse(ResponseObject response){
-                        setDealContent(response);
-                    }
-
-
-
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-                callToast(error.getMessage());
-            }
-        });
-
-
-        ((MainActivity)getActivity()).getDealItems(gsonRequest);
+        if(mOffset == 0){
+            loadMoreData();
+            getListView().setOnScrollListener(this);
+            ItemContent.ITEMS = new ArrayList<ActivityModel>();
+        }
 
     }
 
@@ -108,21 +89,24 @@ public class ItemListFragment extends ListFragment {
      * Set deals from JSON
      */
     private void setDealContent(ResponseObject response){
-        ArrayList<ActivityModel> items = new ArrayList<ActivityModel>();
         if((response == null) || (response.activities == null)){
             return;
         }
         ActivityModel[] itemArray = response.activities;
         for (int i = 0; i < itemArray.length; i++){
-            items.add(itemArray[i]);
+            ItemContent.ITEMS.add(itemArray[i]);
         }
-        ItemContent.ITEMS = items;
 
-        setListAdapter(new ListItemAdapter(getActivity(), ItemContent.ITEMS));
+        if(getListAdapter() == null){
+            setListAdapter(new ListItemAdapter(getActivity(), ItemContent.ITEMS));
+        } else {
+            ((ListItemAdapter)getListAdapter()).notifyDataSetChanged();
+        }
 
         //get the images
         getItemImages();
 
+        mNotLoading = true;
     }
 
     private void callToast(String message){
@@ -176,11 +160,49 @@ public class ItemListFragment extends ListFragment {
 
         }
 
+    }
 
-
-
+    @Override
+    public void onScrollStateChanged(AbsListView absListView, int i) {
 
     }
 
+    @Override
+    public void onScroll(AbsListView absListView, int firstVisibleItem,    int visibleItemCount,    int totalItemCount) {
+        if (getListAdapter() != null && firstVisibleItem + visibleItemCount == ItemContent.ITEMS.size()) {
+            if(mNotLoading){
+                mNotLoading = false;
+                //Load more
+                loadMoreData();
+            }
 
+        }
+    }
+
+    private void loadMoreData(){
+        mOffset += 20;
+        String url ="http://ndev-coreapi.citymaps.com/v2/activity/user/8ea239c4-c648-4009-a252-a220e018dc4b/images?offset=" + mOffset + "&limit=20";
+
+        // Request a string response from the provided URL.
+        GsonRequest gsonRequest = new GsonRequest(url, ResponseObject.class, null,
+                new Response.Listener<ResponseObject>() {
+
+                    @Override
+                    public void onResponse(ResponseObject response){
+                        setDealContent(response);
+                    }
+
+
+
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+                callToast(error.getMessage());
+            }
+        });
+
+
+        ((MainActivity)getActivity()).getDealItems(gsonRequest);
+    }
 }
