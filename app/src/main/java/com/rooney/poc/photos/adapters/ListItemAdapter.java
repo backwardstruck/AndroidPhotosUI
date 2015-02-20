@@ -65,6 +65,7 @@ public class ListItemAdapter extends BaseAdapter {
             holder = new ViewHolder();
             holder.userImage = (ImageView)view.findViewById(R.id.list_item_image_view);
             holder.title = (TextView)view.findViewById(R.id.list_item_title);
+            holder.name = (TextView)view.findViewById(R.id.list_item_name);
             holder.progressBar1 = (ProgressBar)view.findViewById(R.id.progressBar1);
             view.setTag(holder);
         } else {
@@ -86,21 +87,25 @@ public class ListItemAdapter extends BaseAdapter {
             }
 
 
-
-
         } else {
             holder.userImage.setVisibility(View.GONE);
             holder.progressBar1.setVisibility(View.VISIBLE);
         }
 
-        holder.title.setText(activityModel.user.username);
+        if(activityModel.direct_object.name != null){
+            holder.title.setText(activityModel.direct_object.name);
+        }
+
+        if(activityModel.user != null){
+            holder.name.setText(activityModel.user.username);
+        }
 
         return view;
     }
 
     private class ViewHolder {
         public ImageView userImage;
-        public TextView title, price;
+        public TextView title, name;
         public ProgressBar progressBar1;
     }
 }
