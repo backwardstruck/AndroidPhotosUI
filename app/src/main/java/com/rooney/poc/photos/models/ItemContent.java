@@ -5,6 +5,6 @@ import java.util.List;
 
 public class ItemContent {
 
-    public static List<ItemModel> ITEMS = new ArrayList<ItemModel>();
+    public static List<ActivityModel> ITEMS = new ArrayList<ActivityModel>();
 
 }

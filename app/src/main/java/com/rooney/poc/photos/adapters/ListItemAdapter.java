@@ -9,38 +9,38 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.rooney.poc.photos.R;
-import com.rooney.poc.photos.models.ItemModel;
+import com.rooney.poc.photos.models.ActivityModel;
 
 import java.util.List;
 
 public class ListItemAdapter extends BaseAdapter {
     private LayoutInflater inflater;
-    private List<ItemModel> itemModels;
+    private List<ActivityModel> activityModels;
     private Context context;
 
 
-    public static ListItemAdapter newInstance(Context context, List<ItemModel> items) {
+    public static ListItemAdapter newInstance(Context context, List<ActivityModel> items) {
         return new ListItemAdapter(context, items);
     }
 
-    public ListItemAdapter(Context ctx, List<ItemModel> items) {
+    public ListItemAdapter(Context ctx, List<ActivityModel> items) {
         super();
         context = ctx;
         if(context != null){
             inflater = LayoutInflater.from(context);
         }
-        itemModels = items;
+        activityModels = items;
     }
 
     @Override
     public int getCount() {
-        return itemModels.size();
+        return activityModels.size();
     }
 
     @Override
     public Object getItem(int position){
         try {
-            return itemModels.get(position);
+            return activityModels.get(position);
         } catch (IndexOutOfBoundsException e) {
             return null;
         }
@@ -58,9 +58,8 @@ public class ListItemAdapter extends BaseAdapter {
         if(convertView == null) {
             view = inflater.inflate(R.layout.list_item, parent, false);
             holder = new ViewHolder();
-            holder.productImage = (ImageView)view.findViewById(R.id.deal_list_item_image_view);
-            holder.title = (TextView)view.findViewById(R.id.deal_list_item_title);
-            holder.price = (TextView)view.findViewById(R.id.deal_list_item_price);
+            holder.userImage = (ImageView)view.findViewById(R.id.list_item_image_view);
+            holder.title = (TextView)view.findViewById(R.id.list_item_title);
             view.setTag(holder);
         } else {
             view = convertView;
@@ -68,24 +67,15 @@ public class ListItemAdapter extends BaseAdapter {
         }
 
         //set values from data
-        ItemModel itemModel = itemModels.get(position);
-        holder.productImage.setImageBitmap(itemModel.imageBitmap);
-        holder.title.setText(itemModel.title);
-        String price = null;
-        if(itemModel.salePrice != null){
-            price = itemModel.salePrice;
-        } else {
-            price = itemModel.price;
-        }
-        if(price != null){
-            holder.price.setText(price);
-        }
+        ActivityModel activityModel = activityModels.get(position);
+        holder.userImage.setImageBitmap(activityModel.imageBitmap);
+        holder.title.setText(activityModel.created_at);
 
         return view;
     }
 
     private class ViewHolder {
-        public ImageView productImage;
+        public ImageView userImage;
         public TextView title, price;
     }
 }

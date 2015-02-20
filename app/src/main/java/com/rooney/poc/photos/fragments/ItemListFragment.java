@@ -13,8 +13,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 import com.rooney.poc.photos.activities.MainActivity;
 import com.rooney.poc.photos.adapters.ListItemAdapter;
+import com.rooney.poc.photos.models.ActivityModel;
 import com.rooney.poc.photos.models.ItemContent;
-import com.rooney.poc.photos.models.ItemModel;
 import com.rooney.poc.photos.models.ResponseObject;
 import com.rooney.poc.photos.network.GsonRequest;
 
@@ -75,7 +75,7 @@ public class ItemListFragment extends ListFragment {
         super.onResume();
 
 
-        String url ="https://api.myjson.com/bins/3ld7j";
+        String url ="http://ndev-coreapi.citymaps.com/v2/activity/user/8ea239c4-c648-4009-a252-a220e018dc4b/images?offset=0&limit=20";
 
 
 
@@ -108,11 +108,11 @@ public class ItemListFragment extends ListFragment {
      * Set deals from JSON
      */
     private void setDealContent(ResponseObject response){
-        ArrayList<ItemModel> items = new ArrayList<ItemModel>();
-        if((response == null) || (response.data == null)){
+        ArrayList<ActivityModel> items = new ArrayList<ActivityModel>();
+        if((response == null) || (response.activities == null)){
             return;
         }
-        ItemModel[] itemArray = response.data;
+        ActivityModel[] itemArray = response.activities;
         for (int i = 0; i < itemArray.length; i++){
             items.add(itemArray[i]);
         }
@@ -121,7 +121,7 @@ public class ItemListFragment extends ListFragment {
         setListAdapter(new ListItemAdapter(getActivity(), ItemContent.ITEMS));
 
         //get the images
-        getDealItemImages();
+        getItemImages();
 
     }
 
@@ -132,13 +132,13 @@ public class ItemListFragment extends ListFragment {
     /**
      * Retrieve the thumbnails
      */
-    private void getDealItemImages(){
+    private void getItemImages(){
         String imageURL = null;
         if(ItemContent.ITEMS != null){
             for(int i = 0; i < ItemContent.ITEMS.size(); i++){
                 if(ItemContent.ITEMS.get(i) != null){
-                    if(ItemContent.ITEMS.get(i).image != null){
-                        imageURL = ItemContent.ITEMS.get(i).image;
+                    if(ItemContent.ITEMS.get(i).image_url[0] != null){
+                        imageURL = ItemContent.ITEMS.get(i).image_url[0];
 
                         //proceed with the network request
                         final int index = i;

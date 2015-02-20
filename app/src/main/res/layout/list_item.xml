@@ -15,7 +15,7 @@
         android:orientation="vertical">
 
         <ImageView
-            android:id="@+id/deal_list_item_image_view"
+            android:id="@+id/list_item_image_view"
             android:layout_width="@dimen/deal_list_item_image_size"
             android:layout_height="@dimen/deal_list_item_image_size"
             android:contentDescription="@string/image_content_description"/>
@@ -33,7 +33,7 @@
             android:orientation="vertical"
             android:layout_weight=".5">
             <TextView
-                android:id="@+id/deal_list_item_title"
+                android:id="@+id/list_item_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="20sp"
@@ -49,7 +49,7 @@
             android:orientation="horizontal"
             android:layout_weight=".5">
             <TextView
-                android:id="@+id/deal_list_item_price"
+                android:id="@+id/list_item_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="18sp"

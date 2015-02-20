@@ -106,7 +106,7 @@ public class ItemDetailFragment extends Fragment {
     * */
     private void getFullImage(final ImageView imageView){
 
-        String url = ItemContent.ITEMS.get(mIndex).image;
+        String url = ItemContent.ITEMS.get(mIndex).image_url[0];
 
 
         // get image for view

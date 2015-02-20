@@ -6,9 +6,7 @@ package com.rooney.poc.photos.models;
 public class ResponseObject {
 
 
-    public String _id;
-    public ItemModel[] data;
-    public String type;
+    public ActivityModel[] activities;
 
 
 }
