@@ -2,6 +2,7 @@ package com.rooney.poc.photos.activities;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -32,14 +33,19 @@ public class MainActivity extends Activity implements ItemListFragment.OnFragmen
 
     private RequestQueue queue;
     private ShareActionProvider mShareActionProvider;
+    private static final String TAG_LIST_FRAGMENT = "list_fragment";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        FragmentManager fm = getFragmentManager();
+        ItemListFragment listFragment = (ItemListFragment) fm.findFragmentByTag(TAG_LIST_FRAGMENT);
+
         if (savedInstanceState == null) {
             getFragmentManager().beginTransaction()
-                    .add(R.id.container, new ItemListFragment())
+                    .add(R.id.container, new ItemListFragment(), TAG_LIST_FRAGMENT)
                     .commit();
         }
 
