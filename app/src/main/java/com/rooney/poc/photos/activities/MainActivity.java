@@ -168,17 +168,6 @@ public class MainActivity extends Activity implements ItemListFragment.OnFragmen
 
         //null check
         if (imageURL != null) {
-
-
-            //if we are on http://lorempixel.com/
-            if (imageURL.indexOf("lorempixel.com") > 0) {
-                //change the image size, etc
-                imageURL = imageURL.substring(0, imageURL.lastIndexOf("/"));
-                //placeholder image features
-                imageURL = imageURL.concat("/350/450/technics/On-Sale-Now-On-Sale-Now-On-Sale-Now");
-            }
-
-
             NetworkQueue.getInstance(this).getImageLoader().get(imageURL, listener);
         }
 

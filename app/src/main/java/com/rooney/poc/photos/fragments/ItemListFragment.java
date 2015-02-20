@@ -74,8 +74,8 @@ public class ItemListFragment extends ListFragment {
     public void onResume(){
         super.onResume();
 
-
-        String url ="http://ndev-coreapi.citymaps.com/v2/activity/user/8ea239c4-c648-4009-a252-a220e018dc4b/images?offset=0&limit=20";
+        int offset = 0;
+        String url ="http://ndev-coreapi.citymaps.com/v2/activity/user/8ea239c4-c648-4009-a252-a220e018dc4b/images?offset=" + offset + "&limit=20";
 
 
 
